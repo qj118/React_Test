@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Component</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <script type="text/babel">
+        class App extends React.Component{
+            constructor(props) {
+                super(props);
+                this.state = {
+                    todos: [],
+                }
+            }
+
+            addTodo = (todo) => {
+                const { todos } = this.state;
+                todos.push(todo);
+                this.setState({ todos });
+            }
+
+            render(){
+                const { todos } = this.state;
+                return(
+                    <div>
+                        <h1>Simple TODO List</h1>
+                        <Add count={ todos.length + 1 } addTodo={this.addTodo}/>
+                        <List todos={ todos }/>
+                    </div>
+                );
+            }
+        }
+
+        class Add extends React.Component{
+
+            // 子组件无法更新父组件的状态，所以需要在父组件中定义更新状态的行为
+            handleAdd = () => {
+                const todo = this.todoInput.value.trim();
+                const { addTodo } = this.props;
+                if(!todo) return;
+                addTodo(todo);
+                this.todoInput.value="";
+            }
+
+            render(){
+                const { count } = this.props;
+                return(
+                    <div>
+                        <input type="text" ref={input => this.todoInput = input}/>
+                        <button onClick={this.handleAdd}>add #{count}</button>
+                    </div>
+                );
+            }
+        }
+        Add.propTypes = {
+            count: PropTypes.number.isRequired,
+            addTodo: PropTypes.func.isRequired,
+        }
+
+        class List extends React.Component{
+            render(){
+                const { todos } = this.props;
+                return(
+                    <ul>
+                        {
+                            todos.map((todo, index) => {
+                                return <li key={index}>{todo}</li>
+                            })
+                        }
+                    </ul>
+                );
+            }
+        }
+        List.propTypes = {
+            todos: PropTypes.array.isRequired,
+        }
+
+        ReactDOM.render(<App/>, document.getElementById('app'));
+    </script>
+
+</body>
+</html>

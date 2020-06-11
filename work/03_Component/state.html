@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Component</title>
+</head>
+<body>
+    <div id="example"></div>
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <script type="text/babel">
+        class Like extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {
+                    isLikeMe: false
+                };
+                /*[
+                    'handleClick'
+                ].forEach( method => {
+                    this[method] = this[method].bind(this);
+                });*/
+            }
+
+            /*handleClick(){
+                this.setState({
+                    isLikeMe: !this.state.isLikeMe,
+                });
+            }*/
+
+            handleClick = () => {
+                this.setState({
+                    isLikeMe: !this.state.isLikeMe,
+                });
+            }
+
+            render(){
+                const { isLikeMe } = this.state
+                return (
+                    <h2 onClick={ this.handleClick }>{ isLikeMe ? 'I like you.' : 'You like me.' }</h2>
+                );
+            }
+        }
+
+        ReactDOM.render(<Like />, document.getElementById('example'));
+    </script>
+
+</body>
+</html>

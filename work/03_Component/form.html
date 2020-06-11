@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Component</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <script type="text/babel">
+        class Form extends React.Component{
+
+            constructor(props) {
+                super(props);
+                this.state = {
+                    pwd: '',
+                }
+            }
+
+            getPassword =(event) => {
+                const pwd = event.target.value;
+                this.setState({pwd});
+            }
+
+            handleSubmit = (event) => {
+                // 阻止表单提交
+                event.preventDefault();
+                const username = this.nameInput.value;
+                const { pwd } = this.state;
+                alert(`准备提交的表单信息中用户名为${username},密码为${pwd}`);
+
+            }
+
+            render(){
+                return (
+                    <form action="/test" onSubmit={this.handleSubmit}>
+                        用户名：<input type="text" ref={input => this.nameInput = input}/>&nbsp;&nbsp;
+                        密码：<input type="password" value={ this.state.pwd } onChange={ this.getPassword }/>&nbsp;&nbsp;
+                        <input type="submit" value="登录"/>
+                    </form>
+                );
+            }
+        }
+
+        ReactDOM.render(<Form />, document.getElementById('app'));
+    </script>
+
+</body>
+</html>

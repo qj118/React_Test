@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Component</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <script type="text/babel">
+        class Life extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {
+                    opacity: 1,
+                    flag: true,
+                }
+            }
+
+            componentDidMount(){
+                this.intervalId = setInterval(()=>{
+                    console.log("定时器触发。。。");
+                    let { opacity, flag } = this.state;
+                    if(flag){
+                        opacity -= 0.1;
+                    }else{
+                        opacity += 0.1;
+                    }
+                    if(opacity < 0){
+                        flag = false;
+                    }
+                    if(opacity >= 1){
+                        flag = true;
+                    }
+                    this.setState({ opacity, flag });
+                }, 400);
+            }
+
+            distroyComponent = () => {
+                ReactDOM.unmountComponentAtNode(document.getElementById('app'));
+            }
+
+            componentWillUnmount(){
+                clearInterval(this.intervalId); // 根据定时器 id 销毁定时器
+            }
+
+            render(){
+                const { opacity } = this.state;
+                return(
+                    <div>
+                        <h2 style={{ opacity: opacity }}>{this.props.msg}</h2>
+                        <button onClick={this.distroyComponent}>Kill Me</button>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<Life msg="Hello React"/>, document.getElementById('app'));
+    </script>
+
+</body>
+</html>
